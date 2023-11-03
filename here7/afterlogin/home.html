@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../style.css">
+
+    <link rel="stylesheet" href="../lib/animate/animate.min.css">
+    <link rel="stylesheet" href="../lib/owlcarousel/assets/owl.carousel.min.css">
+
+    <!-- Add Axios Library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Fresh To Plate</title>
+</head>
+<body>
+
+    <!-- Nav Bar -->
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="home.html">
+          <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-nav ms-auto p-4 p-lg-0"> <!-- change me to ms to position right-->
+            <a href="home.html" class="nav-item nav-link active">Home</a>
+            <a href="./recipe/recipe.html" class="nav-item nav-link">Recipes</a>  
+            <a href="./inventory/inventory.html" class="nav-item nav-link">Inventory</a>
+            <a href="./mealplan/mealplan.html" class="nav-item nav-link">Meal Plan</a>
+            <a href="./vid/vid.html" class="nav-item nav-link">Videos</a>
+            <a href="../index.html" class="btn btn-outline-danger">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Carousel -->
+    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="../img1/carouselpic1.jpg" class="d-block w-100 vh-100" alt="...">
+          <div class="carousel-caption">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-lg-7">
+                        <h1 class="display-2 mb-5 animated slideInDown">Redefining Food Sustainability</h1>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="../img1/carouselpic2.jpg" class="d-block w-100 vh-100" alt="...">
+          <div class="carousel-caption">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-lg-7">
+                        <h1 class="display-2 mb-5 animated slideInDown">From Leftovers to Feast: It Starts Here</h1>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="../img1/carouselpic3.jpg" class="d-block w-100 vh-100" alt="...">
+          <div class="carousel-caption">
+            <div class="container">
+                <div class="row justify-content-start">
+                    <div class="col-lg-7">
+                        <h1 class="display-2 mb-5 animated slideInDown">Make Every Meal Matter</h1>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- Features -->
+    <div class="container-fluid bg-light bg-icon py-5">
+      <div class="section-header row text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+        <h1 class="display-5">Our Features</h1>
+        <p>Discover a New World of Possibilities in the Kitchen with Our Range of Innovative Features </p>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col wow fadeInUp" data-wow-delay="0.1s">
+          <div class="card h-100 text-center">
+            <img src="../img1/feature1.png" class="img-fluid mx-auto mt-4" alt="..." width="100">
+            <div class="card-body">
+              <h5 class="card-title">Smart Recipe Suggestion</h5>
+              <p class="card-text">Offers recipe suggestions based on your available ingredients</p>
+              <a href="./recipe/recipe.html" class="btn btn-outline-success rounded-pill">Find Recipe</a>
+            </div>
+          </div>
+        </div>
+        <div class="col wow fadeInUp" data-wow-delay="0.3s">
+          <div class="card h-100 text-center">
+            <img src="../img1/feature2.png" class="img-fluid mx-auto mt-4" alt="..." width="100">
+            <div class="card-body">
+              <h5 class="card-title">Effortless Ingredient Input</h5>
+              <p class="card-text">Simplified process of cataloging leftover ingredients</p>
+              <a href="./inventory/inventory.html" class="btn btn-outline-success rounded-pill">Input Ingredients</a>
+            </div>
+          </div>
+        </div>
+        <div class="col wow fadeInUp" data-wow-delay="0.5s">
+          <div class="card h-100 text-center">
+            <img src="../img1/feature3.png" class="img-fluid mx-auto mt-4" alt="..." width="100">
+            <div class="card-body">
+              <h5 class="card-title">Personalised Meal Planning</h5>
+              <p class="card-text">Tailored meal plans for each day based on your ingredients or at random. Take the hassle out of meal preparation</p>
+              <a href="./mealplan/mealplan.html" class="btn btn-outline-success rounded-pill">Plan Meal</a>
+            </div>
+          </div>
+        </div>
+        <div class="col wow fadeInUp" data-wow-delay="0.7s">
+          <div class="card h-100 text-center">
+            <img src="../img1/feature4.png" class="img-fluid mx-auto mt-4" alt="..." width="100">
+            <div class="card-body">
+              <h5 class="card-title">Cooking Skills Video</h5>
+              <p class="card-text">Browse a collection of cooking skills-related videos to improve your culinary expertise</p>
+              <a href="./vid/vid.html" class="btn btn-outline-success rounded-pill">Watch Video</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="container-fluid bg-light bg-icon py-6 mb-6">
+      <div class="container">
+          <div class="section-header text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 500px;">
+              <h1 class="display-5 mb-3">Past Recipes</h1>
+              <p>Discover meals prepared from leftover ingredients by our users</p>
+          </div>
+          <div class="owl-carousel testimonial-carousel wow fadeInUp" data-wow-delay="0.1s">
+              <div class="testimonial-item position-relative bg-white p-5 mt-4 mb-4 h-100">
+                  <p class="mb-4">Hearty meal created from leftover pork chops, potatoes, and asparagus</p>
+                  <img src="../img1/owlcarousel1.jpg" alt=""> 
+                  <button type="button" onclick="selectedRecipe(645598)" class="btn btn-outline-success rounded-pill mt-3">View Recipe</button>
+              </div>
+
+              <div class="testimonial-item position-relative bg-white p-5 mt-4 h-100">
+                  <p class="mb-4">Sandwich prepared using extra tuna, cherry tomatoes, and rocket</p>
+                  <img src="../img1/owlcarousel2.jpg" alt=""> 
+                  <button type="button" onclick="selectedRecipe(1697751)" class="btn btn-outline-success rounded-pill mt-3">View Recipe</button>
+              </div>
+
+              <div class="testimonial-item position-relative bg-white p-5 mt-4 h-100">
+                  <p class="mb-4">Delicious aglio olio prepared using remaining meat and prawns</p>
+                  <img src="../img1/owlcarousel3.jpg" alt=""> 
+                  <button type="button" onclick="selectedRecipe(660019)" class="btn btn-outline-success rounded-pill mt-3">View Recipe</button>
+              </div>
+
+              <div class="testimonial-item position-relative bg-white p-5 mt-4 h-100">
+                  <p class="mb-4">Bibimbap created with surplus ingredients, adding a delicious touch</p>
+                  <img src="../img1/owlcarousel4.jpg" alt=""> 
+                  <button type="button" onclick="selectedRecipe(649073)" class="btn btn-outline-success rounded-pill mt-3">View Recipe</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark footer wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+          <div class="row g-5">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                  <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+                  <p style="color: lightgray;">Your one-stop culinary companion, offering a diverse range of recipes to suit your every mood and preference. Discover delightful dishes, efficiently manage ingredients from your fridge, and embark on a flavorful culinary journey with us. We're here to make your cooking experience delightful, efficient, and endlessly exciting!</p>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                  <h4 class="text-light mb-4">Quick Links</h4>
+                  <a class="btn btn-link" href="recipe/recipe.html">Recipes</a>
+                  <a class="btn btn-link" href="inventory/inventory.html">Inventory</a>
+                  <a class="btn btn-link" href="mealplan/mealplan.html">Meal Plan</a>
+                  <a class="btn btn-link" href="vid/vid.html">Videos</a>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <script>
+
+      function selectedRecipe(recipeId) {
+        console.log(recipeId)
+        document.cookie = "idHomeStr=" + recipeId
+        window.location.href = "home_recipe_page.html"
+      }
+    </script>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+  <!-- Javascript Libraries-->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="../lib/wow/wow.min.js"></script>
+  <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <!-- Template Javascript-->
+  <script src="../main.js"></script>
+</body>
+</html>
+
