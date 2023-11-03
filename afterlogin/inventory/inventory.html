@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="stylesheet" href="../../lib/animate/animate.min.css">
+    <link rel="stylesheet" href="../../lib/owlcarousel/assets/owl.carousel.min.css">
+
+    <!-- Add Axios Library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Fresh To Plate</title>
+
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../home.html">
+          <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="../home.html" class="nav-item nav-link">Home</a>
+            <a href="../recipe/recipe.html" class="nav-item nav-link">Recipes</a>  
+            <a href="inventory.html" class="nav-item nav-link active">Inventory</a>
+            <a href="../mealplan/mealplan.html" class="nav-item nav-link">Meal Plan</a>
+            <a href="../vid/vid.html" class="nav-item nav-link">Videos</a>
+            <a href="../../index.html" class="btn btn-outline-danger">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ACTUAL CONTENT HERE-->
+
+    <div class="container-fluid vh-100" style=" background-image: url('../../img1/background.jpg'); background-size: cover; display: flex; align-items: center; justify-content: center;" > <!--removed pageBody-->
+        <h1 class="display-3 mb-3 animated slideInDown" style="position: absolute; top: 100px; left: 0; margin: 30px;">Inventory</h1>
+        <div class="row search-wrapper d-flex">
+            <div class="col-6">
+                <div class="input-group mb-3">
+                    <input autocomplete="off" type="text" id="input" placeholder="Enter your ingredient" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+            </div>
+
+            <div class="col-3">
+                <div class="input-group mb-3">
+                    <input type="number" id="amt" placeholder="Amount" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+            </div>
+
+            <div class="col-3 mb-3">
+                <button type="button" class="btn btn-success" id="btn" disabled onclick="addItem()">Add Item</button>
+            </div>
+
+            <div class="row px-3">
+                <div class="col-4 p-0">
+                    <div class="autocomplete rounded" id="autocomplete" style="max-height: 10rem; overflow: scroll;"></div>
+                </div>
+            </div>
+
+            <div class='small-text' id="status"></div>
+        </div>
+
+        <div class="row">
+            <div class="col p-3">
+                <ul id="inventoryList"></ul>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- webpage (dynamically generated) -->
+    <div class="album py-5 bg-light bg-icon vh-100">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start animated slideInLeft"  id="results">
+            </div>
+        </div>        
+    </div>
+
+
+    <script type="text/javascript" src="../inventory/inventory.js"></script>
+    <script>
+
+        displayInventory()
+
+        var ingredientArr = {}
+
+        async function getIngredients() {
+            var response = await  fetch("inventory.json")
+            .then(
+                (response) => response.json()
+                )
+            .then (
+                (json) => {
+                    for (i in Object.keys(json)) {
+                        ingredientArr[json[i].ingredient] = json[i].id
+                    }
+                }
+            )
+        }
+
+        getIngredients()
+        console.log(ingredientArr)
+
+        function addItem() {
+            document.getElementById("autocomplete").style.display = "none"
+            var item = document.getElementById("input").value
+            var amt = document.getElementById("amt").value
+            if (item == "") {
+                document.getElementById("status").innerHTML = "<p class='small-text'> Please enter a valid ingredient. </p>"
+                console.log(document.getElementById("status"))
+            }
+            else if (!Object.keys(ingredientArr).includes(item)) {
+                document.getElementById("status").innerHTML = "<p class='small-text'> Please enter a valid ingredient. </p>"
+            }
+            else if (isNaN(Number(amt)) || amt == "") {
+                //do not let user input -ve number, set 2 buttons 1 to add 1 to delete? then form validate the delete amount?
+                document.getElementById("status").innerHTML = "<p class='small-text'> Please enter a valid amount. </p>"
+            }
+            else {
+                updateItem(item, amt);
+                displayInventory()
+                inventoryItems()
+            }
+        }
+        
+        inventoryItems()
+
+        const apiKey = 'a5fd2f2dd7614a5ebded85569becba27';
+        const apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
+
+        var input = document.getElementById("input")
+        input.addEventListener("keyup", getSuggestion)
+
+        
+
+        function getSuggestion() {
+
+            document.getElementById("autocomplete").style.display = "inline-block"
+            
+            
+            let value = input.value
+            var url = `inventory.php`
+            
+            console.log(value)
+
+            axios.get(
+                url, {
+                    params: {
+                        query : value
+                    }
+                }
+            )
+
+            .then (
+
+                response => { //function shorthand
+                    console.log(response.data)
+
+                    let output = document.getElementById("autocomplete")
+
+                    var dataSet = (response.data).split(", ") 
+                    console.log(dataSet)
+
+                    if (dataSet[0] == "no suggestion") {
+                        document.getElementById("status").innerHTML = "<p class='small-text'> Please enter a valid ingredient. </p>"
+                        document.getElementById("autocomplete").style.display = "none"
+                        document.getElementById("btn").setAttribute("disabled", "")
+                    }
+
+                    else if (dataSet.length !== 0) {
+
+                        document.getElementById("status").innerHTML = ""
+                        document.getElementById("btn").removeAttribute("disabled", "")
+
+                        output.innerText = ""
+                        var autocompleteSugg = document.createElement("table")
+                        autocompleteSugg.className = "autocompleteTable"
+                        autocompleteSugg.id = "autocompleteTable"
+
+                        for (index in dataSet) {
+                            console.log(index)
+                            if ((index < 10) && (10 < dataSet.length) || ((index < dataSet.length) && (10 >= dataSet.length))) {
+                                var autocompleteLine = document.createElement("tr")
+                                autocompleteLine.setAttribute("onclick", "chosen(this)")    
+                                var autocompleteData = document.createElement("td")
+                                var autocompleteText = document.createTextNode(dataSet[index])
+
+                                autocompleteData.appendChild(autocompleteText)
+                                autocompleteLine.appendChild(autocompleteData)
+                                autocompleteSugg.appendChild(autocompleteLine)
+                            }
+                        }
+
+                        output.appendChild(autocompleteSugg)
+
+                    }
+
+                    else {
+                        output.innerText = ""
+                    }
+                    
+                    
+                }
+            )
+
+            .catch (
+                error => {
+                    let output = document.getElementById("autocomplete")
+                    console.log(error.message)
+                }
+            )
+        }
+
+        function chosen(sugg) {
+            document.getElementById("input").value = sugg.innerText
+            document.getElementById("autocompleteTable").style.display = "none"
+        }
+        
+    </script>
+
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark footer wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+          <div class="row g-5">
+              <div class="col-lg-6 col-md-6">
+                  <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+                  <p style="color: lightgray;">Your one-stop culinary companion, offering a diverse range of recipes to suit your every mood and preference. Discover delightful dishes, efficiently manage ingredients from your fridge, and embark on a flavorful culinary journey with us. We're here to make your cooking experience delightful, efficient, and endlessly exciting!</p>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                  <h4 class="text-light mb-4">Quick Links</h4>
+                  <a class="btn btn-link" href="../recipe/recipe.html">Recipes</a>
+                  <a class="btn btn-link" href="inventory.html">Inventory</a>
+                  <a class="btn btn-link" href="../mealplan/mealplan.html">Meal Plan</a>
+                  <a class="btn btn-link" href="../vid/vid.html">Videos</a>
+              </div>
+          </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <!-- Javascript Libraries-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../../lib/wow/wow.min.js"></script>
+    <script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript-->
+    <script src="../../main.js"></script>
+</body>
+</html>

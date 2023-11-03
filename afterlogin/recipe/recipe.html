@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="stylesheet" href="../../lib/animate/animate.min.css">
+    <link rel="stylesheet" href="../../lib/owlcarousel/assets/owl.carousel.min.css">
+
+    <!-- Add Axios Library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Fresh To Plate</title>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../home.html">
+          <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="../home.html" class="nav-item nav-link">Home</a>
+            <a href="recipe.html" class="nav-item nav-link active">Recipes</a>  
+            <a href="../inventory/inventory.html" class="nav-item nav-link">Inventory</a>
+            <a href="../mealplan/mealplan.html" class="nav-item nav-link">Meal Plan</a>
+            <a href="../vid/vid.html" class="nav-item nav-link">Videos</a>
+            <a href="../../index.html" class="btn btn-outline-danger">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ACTUAL CONTENT START -->
+    <div class="row vh-100"> 
+        <div class="card vh-100" style="background-image: url('../../img1/background.jpg'); background-size: cover;">
+  
+            <!-- search area -->
+            <div class="card-img-overlay py-5">
+                <h1 class="display-3 mb-3 animated slideInDown" style="position: absolute; top: 100px; left: 0; margin: 30px;">Recipe</h1>
+                <div class="row search-wrapper">
+                    <div class="col" id="input">
+                        <div class="d-flex">
+                            <div class="input-group mb-3">
+                                <input autocomplete="off" type="text" placeholder="Search for a recipe" id="ingredients-input" name="ingredients-input" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            </div>
+                            <div class="col-1 mx-2">
+                                <button type="button" class="btn btn-success"  onclick="searchRecipes()">Search</button>
+                            </div>
+                            <div class="col-1  mx-5">
+                                <button type="button" class="btn btn-success"  onclick="filterDisplay()">Filter</button>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-12 fw-bold" style="text-align: center; height:fit-content">
+                                <input type="radio" id="fridge" onclick="makeQuery()">
+                                    <label for="fridge">
+                                        I want to clear my fridge!
+                                    </label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 p-0">
+                                <div class="autocomplete rounded" id="autocomplete" style="max-height: 10rem; overflow: scroll;"></div>
+                            </div>
+                        </div>
+                    <div class="col-1"></div>                                              
+                </div>
+
+                
+  
+                <!-- filter box -->
+                <div class="col px-3">
+                    <div class="small-text" id="resultText"> &nbsp; </div>
+                    <div class="container m-0 rounded" id="filterBox" style="display: none; position:inherit; max-height: 15rem; overflow: scroll;">
+                        <div class="row filter-header">
+                            Filters
+                        </div>  
+                        
+                        
+                        <form>
+  
+                            <div class="row filter-box">
+                                <div class="col-md-6 col-sm-12 d-inline-block"> <!-- if <768(md) display diet n sort by takes up the whole 12 col so everything still fits-->
+                                    <p class="fw-bold m-0 my-1"> Diet </p>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="checkbox" id="glutenFree" onclick="dietInput(this.id)">
+                                                <label for="glutenFree">
+                                                    Gluten Free
+                                                </label> <br>
+                                            <input type="checkbox" id="ketogenic" onclick="dietInput(this.id)">
+                                                <label for="ketogenic">
+                                                    Ketogenic
+                                                </label> <br>
+                                            <input type="checkbox" id="pescatarian" onclick="dietInput(this.id)">
+                                                <label for="pescatarian">
+                                                    Pescatarian
+                                                </label> <br>
+                                        </div>                                
+                                        <div class="col-6">
+                                            <input type="checkbox" id="vegetarian" onclick="dietInput(this.id)">
+                                                <label for="vegetarian">
+                                                    Vegetarian
+                                                </label> <br>
+                                            <input type="checkbox" id="vegan" onclick="dietInput(this.id)">
+                                                <label for="vegan">
+                                                    Vegan
+                                                </label> <br>
+                                            <input type="checkbox" id="dairyFree" onclick="dietInput(this.id)">
+                                                <label for="dairyFree">
+                                                    Dairy Free
+                                                </label> <br>
+                                        </div>   
+                                    </div>                                 
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <p class="fw-bold m-0 my-1"> Sort-by </p>     
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="radio" name="sort" id="popularity" onclick="sortInput(this.id)" value="popularity">
+                                                <label for="popularity">
+                                                    Popularity
+                                                </label> <br>
+                                            <input type="radio" name="sort" id="healthiness" onclick="sortInput(this.id)" value="healthiness">
+                                                <label for="healthiness">
+                                                    Healthiness
+                                                </label> <br>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="radio" name="sort" id="time" onclick="sortInput(this.id)" value="time">
+                                                <label for="time">
+                                                    Time
+                                                </label> <br>
+                                        </div>
+                                    </div>                           
+                                    
+                                    
+                                </div>
+                                
+                            </div>                            
+                        </form>
+  
+                    </div>
+                </div>
+            </div>
+  
+        </div>
+    </div>
+
+    <!--Recipes For You-->
+    <div class="container-fluid bg-light bg-icon py-5" id="carousel" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100vh;"> <!-- NOT WORKING-->
+        <div class="container">
+            <div class="section-header text-center mx-auto mb-5 wow fadeInUp owl-loaded owl-drag" data-wow-delay="0.1s" style="max-width: 500px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+                <h1 class="display-5 mb-3">Recipes For You</h1>
+                <p>Get inspired by some of our popular recipes curated just for you</p>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start wow fadeInUp justify-content-around" data-wow-delay="0.1s" id="randomRecipes">
+            </div>
+        </div>
+    </div>
+  
+    <script type="text/javascript" src="../inventory/inventory.js"></script>
+    <script>
+  
+        var cookie = document.cookie
+        search = cookie.split("; ")
+        console.log(search)
+        for (eachCookie of search) {
+            if (eachCookie.substring(0,10) == "searchStr=") {
+                var searchStr = eachCookie.substring(10,)
+                console.log(searchStr)
+            }
+            else if (eachCookie.substring(0,10) == "recipeStr=") {
+                var recipeStr = eachCookie.substring(10,)
+                console.log(recipeStr)
+            }
+        }
+        
+        var invItems = "" 
+        var ifInv = ""
+        
+        function makeQuery() {
+  
+            if (document.getElementById("fridge").checked) {
+                invItems = inventoryItems()
+                ifInv = "max-used-ingredients"
+                console.log(document.getElementById("fridge"))
+                searchRecipes()
+            }
+            else {
+                invItems = "" 
+                ifInv = ""
+            }
+        
+        }
+  
+        const apiKey = '7e8fee3bd90b4a46ba196a5b70f4958f';
+        const apiUrl = 'https://api.spoonacular.com/recipes/complexSearch';
+
+        displayRandom()
+  
+        var input = document.getElementById("ingredients-input")
+        input.addEventListener("keyup", getSuggestion)
+  
+        function getSuggestion() {
+  
+            document.getElementById("autocomplete").style.display = "inline-block"
+            
+            let value = input.value
+            var url = `https://api.spoonacular.com/recipes/autocomplete?apiKey=${apiKey}&number=10&query=${value}`
+            
+            console.log(value)
+  
+            axios.get(url)
+  
+            .then (
+  
+                response => { //function shorthand
+                    console.log(response.data)
+  
+                    let output = document.getElementById("autocomplete")
+  
+                    if (response.data.length !== 0) {
+  
+                        output.innerText = ""
+                        var autocompleteSugg = document.createElement("table")
+                        autocompleteSugg.className = "autocompleteTable"
+  
+                        for (index in response.data) {
+
+
+                            var autocompleteLine = document.createElement("tr")
+                            autocompleteLine.setAttribute("onclick", "autosearch(this)")    
+                            var autocompleteData = document.createElement("td")
+                            var autocompleteText = document.createTextNode(response.data[index].title)
+  
+                            autocompleteData.appendChild(autocompleteText)
+                            autocompleteLine.appendChild(autocompleteData)
+                            autocompleteSugg.appendChild(autocompleteLine)
+                        }
+  
+                        output.appendChild(autocompleteSugg)
+  
+                    }
+  
+                    else {
+                        output.innerText = ""
+                    }
+                    
+                    
+                }
+            )
+  
+            .catch (
+                error => {
+                    let output = document.getElementById("autocomplete")
+                    console.log(error.message)
+                }
+            )
+        }
+  
+        function autosearch(sugg) {
+            console.log(sugg.innerText)
+            console.log(input)
+            input.value = sugg.innerText
+            console.log(input)
+            searchRecipes()
+        }
+  
+        function filterDisplay() {
+            document.getElementById("autocomplete").style.display = "none"
+            var x = document.getElementById("filterBox")
+            if (x.style.display == "inline-block") {
+                x.style.display = "none"
+            }
+            else {
+                x.style.display = "inline-block"
+            }
+        }
+  
+        var dietsArr = []
+        var filter = ''
+  
+        function dietInput(diet) {
+            dietsArr.push(diet)
+        }
+  
+        function sortInput(filterInput) {
+            filter = filterInput
+        }        
+  
+        async function searchRecipes() {
+
+            document.getElementById("autocomplete").style.display = "none"
+
+            const ingredientsInput = document.getElementById('ingredients-input').value;
+            var ingredientsQuery = (ingredientsInput.toLowerCase()).split(" ").join("+") + "," + invItems
+            console.log(ingredientsQuery)
+            console.log(dietsArr)
+  
+            if (dietsArr.length !== 0) {
+                var dietQuery = (dietsArr.join("+")).toLowerCase()
+            }
+            else {
+                var dietQuery = ""
+            }
+  
+            if (!ifInv == "") {
+                var sortQuery = ifInv
+            }
+            else if (!filter == "") {
+                var sortQuery = filter
+            }
+            else {
+                var sortQuery = ""
+            }
+  
+            console.log(dietQuery)
+            console.log(sortQuery)
+            console.log(`${apiUrl}?apiKey=${apiKey}&query=${ingredientsQuery}&diet=${dietQuery}&sort=${sortQuery}&number=24`)
+  
+            try {
+  
+                var response = await fetch(`${apiUrl}?apiKey=${apiKey}&query=${ingredientsQuery}&diet=${dietQuery}&sort=${sortQuery}&number=24`)
+  
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data.results); // Add this line to log the data structure
+                    displayRecipes(data.results);
+                    
+                } else {
+                    document.getElementById("resultText").innerText = "No recipes found."
+                    console.error('Error:', response.statusText);
+                }
+            } catch (error) {
+                document.getElementById("resultText").innerText = "No recipes found."
+                console.error('Error:', error);
+            }
+  
+        }
+  
+        function displayRecipes(recipes) {
+            if (recipes.length === 0) {
+                document.getElementById("resultText").innerText = "No recipes found."
+  
+            } else {
+                const ingredientsInput = document.getElementById('ingredients-input').value;
+                var recipeStr = ''
+                recipes.forEach(recipe => {
+  
+                    recipeStr += `[${recipe.title}##${recipe.id}##${recipe.image}]~~` 
+  
+                });
+                
+                recipeStr = recipeStr.substring(0, recipeStr.length-2)
+                console.log(recipeStr)
+                
+                if (ingredientsInput == "") {
+                    document.cookie = "searchStr=" + "clear fridge"
+                }
+                else {
+                    document.cookie = "searchStr=" + ingredientsInput
+                }
+                document.cookie = "recipeStr=" + recipeStr
+                console.log(document.cookie)
+  
+                window.location.href = "recipe_searched.html"
+            }
+        }
+
+        function displayRandom() {
+            console.log("hello")
+            var url = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=4`
+  
+            axios.get(url)
+  
+            .then (
+  
+                response => { //function shorthand
+                    console.log(response.data)
+
+
+                    var randomRecipes = document.getElementById("randomRecipes")
+                    randomRecipes.innerHTML = ""
+
+
+                    for (recipe in Object.keys(response.data.recipes)) {
+
+
+                        const col = document.createElement("div");
+                        col.className = "col my-1";
+
+                        const card = document.createElement("div");
+                        card.className = "card shadow-sm m-1 h-100";
+
+                        var img = document.createElement("img")
+                        img.src = response.data.recipes[recipe].image
+
+                        const cardBody = document.createElement("div");
+                        cardBody.className = "card-body";
+
+                        var title = document.createElement("p")
+                        title.className = "mb-4"
+                        title.textContent = response.data.recipes[recipe].title
+                        
+                        var recipeBtn = document.createElement("button")
+                        recipeBtn.type = "button"
+                        recipeBtn.setAttribute("onclick", `selectedRecipe(${response.data.recipes[recipe].id})`)
+                        recipeBtn.className = "btn btn-outline-success rounded-pill mt-3"
+                        recipeBtn.textContent = "View Recipe"
+
+                        cardBody.appendChild(title)
+                        cardBody.appendChild(recipeBtn)
+                        card.appendChild(img)
+                        card.appendChild(cardBody)
+                        col.appendChild(card)
+                        randomRecipes.appendChild(col)
+                    }                      
+                    
+                }
+            )
+  
+            .catch (
+                error => {
+                    console.log(error.message)
+                }
+            )
+
+        }
+
+        function selectedRecipe(recipeId) {
+            console.log(recipeId)
+            document.cookie = "idStr=" + recipeId
+            window.location.href = "recipe_page.html"
+        }
+
+
+       
+    </script>
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark footer wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+          <div class="row g-5">
+              <div class="col-lg-6 col-md-6">
+                  <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+                  <p style="color: lightgray;">Your one-stop culinary companion, offering a diverse range of recipes to suit your every mood and preference. Discover delightful dishes, efficiently manage ingredients from your fridge, and embark on a flavorful culinary journey with us. We're here to make your cooking experience delightful, efficient, and endlessly exciting!</p>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                  <h4 class="text-light mb-4">Quick Links</h4>
+                  <a class="btn btn-link" href="recipe.html">Recipes</a>
+                  <a class="btn btn-link" href="../inventory/inventory.html">Inventory</a>
+                  <a class="btn btn-link" href="../mealplan/mealplan.html">Meal Plan</a>
+                  <a class="btn btn-link" href="../vid/vid.html">Videos</a>
+              </div>
+          </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <!-- Javascript Libraries-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../../lib/wow/wow.min.js"></script>
+    <script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript-->
+    <script src="../../main.js"></script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../../style.css">
+
+    <link rel="stylesheet" href="../../lib/animate/animate.min.css">
+    <link rel="stylesheet" href="../../lib/owlcarousel/assets/owl.carousel.min.css">
+
+    <!-- Add Axios Library -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <title>Fresh To Plate</title>
+</head>
+<body>
+    <!-- Nav Bar -->
+    <nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="../home.html">
+          <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="../home.html" class="nav-item nav-link">Home</a>
+            <a href="../recipe/recipe.html" class="nav-item nav-link">Recipes</a>  
+            <a href="../inventory/inventory.html" class="nav-item nav-link">Inventory</a>
+            <a href="mealplan.html" class="nav-item nav-link active">Meal Plan</a>
+            <a href="../vid/vid.html" class="nav-item nav-link">Videos</a>
+            <a href="../../index.html" class="btn btn-outline-danger">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <!-- ACTUAL CONTENT HERE--> 
+    <div id="meal-plan" class="vh-100" style="background-image: url('../../img1/background.jpg'); background-size: cover; display: flex; align-items: center; justify-content: center; "> <!--remove pageBody-->
+      <h1 class="display-3 mb-3 animated slideInDown" style="position: absolute; top: 100px; left: 0; margin: 30px;">Meal Plan</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-6 d-flex justify-content-center flex-wrap">
+            <a href="#generated-meal-plan-section" class="btn btn-success mt-3 mx-4 mb-3 p-4" onclick="generateMealPlan()" >Generate New Meal Plan</a>
+          </div>
+          <div class="col-6 d-flex justify-content-center flex-wrap">
+            <a href="#generated-meal-plan-section" class="btn btn-success mt-3 mx-4 mb-3 p-4 ">View Current Meal Plan</a> 
+          </div>
+        </div>
+        <div class="row px-5">
+          <ul id="meal-plan-list"></ul>
+        </div>   
+      </div>
+    </div>
+
+    <div class="album py-5 bg-light bg-icon" id="generated-meal-plan-section">
+      <h2 style="margin-left: 30px">Generated Meal Plan:</h2>
+      <div class="container">
+          <div class="row my-1">
+            <div class="row">
+              <h2>Monday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="monday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Tuesday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="tuesday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Wednesday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="wednesday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Thursday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="thursday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Friday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="friday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Saturday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start" id="saturday"></div>
+          </div>
+          <div class="row my-1">
+            <div class="row">
+              <h2>Sunday</h2>
+            </div>
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-start mb-3" id="sunday"></div>
+          </div>
+      </div>        
+    </div>
+
+    <script>
+      const apiKey = 'baf120bd69e941b58c08198a964333e6';
+      const apiUrl = 'https://api.spoonacular.com/mealplanner/generate';
+
+      var cookie = document.cookie
+      search = cookie.split("; ")
+      console.log(search)
+      mealPlan = {}
+      for (eachCookie of search) {
+          if (eachCookie.substring(0,7) == "monday=") {
+            mealPlan["monday"] = eachCookie.substring(7,)
+          }
+          else if (eachCookie.substring(0,8) == "tuesday=") {
+            mealPlan["tuesday"] = eachCookie.substring(8,)
+          }
+          else if (eachCookie.substring(0,10) == "wednesday=") {
+            mealPlan["wednesday"] = eachCookie.substring(10,)
+          }
+          else if (eachCookie.substring(0,9) == "thursday=") {
+            mealPlan["thursday"] = eachCookie.substring(9,)
+          }
+          else if (eachCookie.substring(0,7) == "friday=") {
+            mealPlan["friday"] = eachCookie.substring(7,)
+          }
+          else if (eachCookie.substring(0,9) == "saturday=") {
+            mealPlan["saturday"] = eachCookie.substring(9,)
+          }
+          else if (eachCookie.substring(0,7) == "sunday=") {
+            mealPlan["sunday"] = eachCookie.substring(7,)
+          }
+      }
+
+      async function generateMealPlan() {
+
+          try {
+              const response = await fetch(`${apiUrl}?apiKey=${apiKey}`);
+              if (response.ok) {
+                  console.log(document.cookie)
+                  mealPlan = {}
+                  const data = await response.json();
+                  for (i of Object.keys(data.week)) {
+                    document.getElementById(i).innerHTML = ""
+                    var dayOfWeek = i + "="
+                    mealsOfWeek = ""
+                    for (j in Object.keys(data.week[i].meals)) {
+                      mealsOfWeek += "$$" + data.week[i].meals[j].id
+                    }
+                  document.cookie = dayOfWeek + mealsOfWeek
+                  mealPlan[i] = mealsOfWeek
+                  }
+                  console.log(document.cookie)
+                  console.log(mealPlan)
+                  displayMealPlan(mealPlan)
+
+              } else {
+                  console.error('Error:', response.statusText);
+              }
+          } catch (error) {
+              console.error('Error:', error);
+          }
+        
+      }
+
+      displayMealPlan(mealPlan)
+
+      function displayMealPlan(mealPlan) {
+
+        const mealPlanList = document.getElementById('meal-plan-list');
+        mealPlanList.innerHTML = '';
+
+        var days = Object.keys(mealPlan)
+        if (days.length === 0) {
+            mealPlanList.innerHTML = '<p>No meal plan generated.</p>';
+        } else {
+            days.forEach(day => {
+              meals = mealPlan[day].split("$$")
+              //bfast 1 lunch 2 dinner 3
+              for (let i=1; i<meals.length; i++) {
+                getRecipeById(day, meals[i], apiKey)
+              }
+            }
+                
+                
+          );
+        }
+      }
+
+      var dietObj = {
+                    "gluten free" : "gf",
+                    "ketogenic" : "keto",
+                    "pescatarian" : "pesc",
+                    "vegetarian" : "vege",
+                    "vegan" : "vegan",
+                    "dairy free" : "df"
+          }
+
+      async function createCard(day, recipesObj) {
+
+        var results = document.getElementById(day) 
+              
+        const col = document.createElement("div");
+        col.className = "col my-1";
+
+        const buttonBack = document.createElement("a")
+        buttonBack.href = "mealplan_recipe_page.html"
+        buttonBack.style.textDecoration = "none"
+        buttonBack.onclick = selectedRecipe => {
+          document.cookie = "mpIdStr=" + recipesObj.id
+        }
+
+        const card = document.createElement("div");
+        card.className = "card shadow-sm m-1 h-100";
+
+        const img = document.createElement("img");
+        img.src = recipesObj.image;
+        img.class = "p-0 m-auto"
+
+        const cardBody = document.createElement("div");
+        cardBody.className = "card-body";
+
+        const description = document.createElement("p");
+        description.className = "card-text"
+        description.textContent = recipesObj.name;
+
+        const subHeader = document.createElement("div")
+        subHeader.className = "d-inline justify-content-between align-items-center"
+
+        const btnGrp = document.createElement("div")
+        btnGrp.className = "pb-3"
+        btnGrp.innerHTML = ""
+        btnGrp.id = recipesObj.id + "diet"
+
+        const cookTime = document.createElement("div")
+        cookTime.className = "small-text p-2 text-end cardCookTime"
+
+        // console.log(recipesObj)
+
+        if (recipesObj.diet.length !== 0) {
+          for (diet of recipesObj.diet) {
+            if (diet in dietObj) {
+              btnGrp.innerHTML += `<button type="button" class="btn btn-sm mt-1 mr-1 ${dietObj[diet]}"> ${diet} </button>`
+            }
+          } 
+        }
+
+        cookTime.textContent = recipesObj.cookingTime + " minutes"
+
+        
+        subHeader.appendChild(btnGrp)
+        subHeader.appendChild(cookTime)
+        cardBody.appendChild(description)
+        cardBody.appendChild(subHeader)
+        card.appendChild(img)
+        card.appendChild(cardBody)
+        buttonBack.appendChild(card)
+        col.appendChild(buttonBack)
+
+        results.appendChild(col);
+
+
+      }
+
+      function getRecipeById(day, recipeId, apiKey) {
+            const apiUrl = `https://api.spoonacular.com/recipes/${recipeId}/information?apiKey=${apiKey}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to fetch recipe information');
+                    }
+                })
+                .then(data => {
+                    // Handle the recipe data here
+                    //impt is data.diets, data.image, data.id, data.readyInMinutes
+                    var dataObj = {
+                                    "diet" : data.diets,
+                                    "image" : data.image,
+                                    "id" : data.id,
+                                    "cookingTime" : data.readyInMinutes,
+                                    "name" : data.title
+                                  }
+                    createCard(day, dataObj)
+                })
+                .catch(error => {
+                    // Handle errors here
+                    console.error(error);
+                });
+        }
+
+    </script>
+
+    <!-- Footer -->
+    <div class="container-fluid bg-dark footer wow fadeIn" data-wow-delay="0.1s">
+      <div class="container py-5">
+          <div class="row g-5">
+              <div class="col-lg-6 col-md-6">
+                  <h1 class="fw-bold text-success">Fresh<span class="text-danger">To</span>Plate</h1>
+                  <p style="color: lightgray;">Your one-stop culinary companion, offering a diverse range of recipes to suit your every mood and preference. Discover delightful dishes, efficiently manage ingredients from your fridge, and embark on a flavorful culinary journey with us. We're here to make your cooking experience delightful, efficient, and endlessly exciting!</p>
+              </div>
+              <div class="col-lg-6 col-md-6">
+                  <h4 class="text-light mb-4">Quick Links</h4>
+                  <a class="btn btn-link" href="../recipe/recipe.html">Recipes</a>
+                  <a class="btn btn-link" href="../inventory/inventory.html">Inventory</a>
+                  <a class="btn btn-link" href="mealplan.html">Meal Plan</a>
+                  <a class="btn btn-link" href="../vid/vid.html">Videos</a>
+              </div>
+          </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+    <!-- Javascript Libraries-->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../../lib/wow/wow.min.js"></script>
+    <script src="../../lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript-->
+    <script src="../../main.js"></script>
+</body>
+</html>
